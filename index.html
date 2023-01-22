@@ -12,7 +12,7 @@
             <input type="text" name="username"><br>
             <label>Comment:</label><br>
             <textarea name="comment"></textarea><br>
-            <p><button onclick="postComment">Post Comment</button></p>
+            <p><button onclick="postComment()">Post Comment</button></p>
         </form>
         <div id="result">
             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
@@ -23,12 +23,26 @@
                 doloribus veniam dolorem eos adipisci, velit reiciendis quis.</p>
         </div>
         <script>
+            function postComment(){
             // Step 1: set up our AJAX object / engine
             const xhr = new XMLHttpRequest()
             // Step 2: configure our AJAX object
             const method = "POST"
             const url = "./message.php"
-
+            xhr.open(method, url)
+            // Step 3: listen for events
+            xhr.onreadystatechange = () => {
+                if(this.readyState === 4 && this.status === 200){
+                    const result = document.getElementById("result")
+                    result.innerText = this.responseText
+                }
+            }
+            // Step 4: send our AJAX request
+            const myForm = document.getElementById("main-form")
+            const userData = new FormData(myForm)
+            console.log(userData)
+            xhr.send(userData)
+        }
         </script>
     </body>
 </html>
